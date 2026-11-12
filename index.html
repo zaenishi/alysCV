@@ -10,95 +10,221 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    /* Tema awal tanpa flash + failsafe reveal */
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      try {
+        var t = localStorage.getItem('siti-theme');
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        d.dataset.theme = t;
+      } catch (e) {
+        d.dataset.theme = 'light';
+      }
+      window.setTimeout(function () {
+        if (!window.__sitiRevealReady) {
+          document.querySelectorAll('[data-reveal]').forEach(function (el) {
+            el.classList.add('is-revealed');
+          });
+        }
+      }, 2200);
+    })();
+  </script>
   <script src="assets/js/image-cache.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Lewati ke konten</a>
-  <header class="site-header">
-    <a class="wordmark" href="#home" aria-label="Siti Alawiyah, beranda">SA<span>.</span></a>
+  <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+
+  <header class="site-header" data-header>
+    <a class="wordmark" href="#home" aria-label="Siti Alawiyah — beranda">SA<span>.</span></a>
+
     <nav class="desktop-nav" aria-label="Navigasi utama">
-      <a href="#about">Tentang</a><a href="#skills">Keahlian</a><a href="#experience">Pengalaman</a><a href="#education">Pendidikan</a><a href="#certificates">Sertifikat</a>
+      <a href="#about">Tentang</a>
+      <a href="#skills">Keahlian</a>
+      <a href="#experience">Pengalaman</a>
+      <a href="#education">Pendidikan</a>
+      <a href="#certificates">Sertifikat</a>
     </nav>
+
     <div class="header-actions">
       <a class="text-link" href="cv.html">Lihat CV <span aria-hidden="true">↗</span></a>
-      <button class="theme-button" id="themeToggle" type="button" aria-label="Ganti tema" title="Ganti tema">◐</button>
+
+      <button class="theme-button" type="button" data-theme-toggle aria-pressed="false" aria-label="Aktifkan mode gelap" title="Ganti tema">
+        <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"></path>
+        </svg>
+        <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+        </svg>
+      </button>
+
+      <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobileNav" aria-label="Buka menu navigasi">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
-  <main id="main">
-    <section class="hero section-wrap" id="home">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="eyebrow-dot"></span> PORTFOLIO • 2026</p>
-        <h1>Halo, saya<br><em>Siti Alawiyah.</em></h1>
-        <p class="hero-role">Siswa SMK <span>•</span> Calon Tenaga Kerja Industri</p>
-        <p class="hero-intro">Siswi Teknik Jaringan Komputer dan Telekomunikasi yang memiliki semangat belajar, disiplin, dan komitmen untuk terus berkembang serta memberikan kontribusi positif.</p>
-        <div class="hero-actions">
-          <a class="button button-dark" href="cv.html">Lihat CV formal <span>↗</span></a>
-          <a class="button button-line" href="#contact">Hubungi saya <span>↓</span></a>
+  <nav class="mobile-nav" id="mobileNav" data-mobile-nav aria-label="Navigasi seluler">
+    <a href="#about">Tentang</a>
+    <a href="#skills">Keahlian</a>
+    <a href="#experience">Pengalaman</a>
+    <a href="#education">Pendidikan</a>
+    <a href="#activities">Aktivitas</a>
+    <a href="#certificates">Sertifikat</a>
+    <a href="#contact">Kontak</a>
+  </nav>
+
+  <main id="main" tabindex="-1">
+    <section class="hero section-wrap" id="home" aria-labelledby="heroTitle">
+      <div class="hero-copy" data-reveal-group>
+        <p class="eyebrow" data-reveal><span class="eyebrow-dot" aria-hidden="true"></span> PORTFOLIO • 2026</p>
+        <h1 id="heroTitle" data-reveal>Halo, saya<br><em>Siti Alawiyah.</em></h1>
+        <p class="hero-role" data-reveal>Siswa SMK <span>•</span> Calon Tenaga Kerja Industri</p>
+        <p class="hero-intro" data-reveal>Siswi Teknik Jaringan Komputer dan Telekomunikasi yang memiliki semangat belajar, disiplin, dan komitmen untuk terus berkembang serta memberikan kontribusi positif.</p>
+        <div class="hero-actions" data-reveal>
+          <a class="button button-dark" href="cv.html">Lihat CV formal <span aria-hidden="true">↗</span></a>
+          <a class="button button-line" href="#contact">Hubungi saya <span aria-hidden="true">↓</span></a>
         </div>
-        <div class="hero-index"><span>01 / 06</span><span>RENGASDENGKLOK, INDONESIA</span></div>
+        <div class="hero-index" data-reveal><span>01 / 06</span><span>RENGASDENGKLOK, INDONESIA</span></div>
       </div>
-      <div class="hero-visual">
-        <div class="visual-note note-top">TERUS BELAJAR<br>TERUS BERTUMBUH</div>
-        <div class="portrait-frame">
-          <img class="profile-image" src="assets/images/profile.jpg" data-profile-image alt="Foto profil Siti Alawiyah">
-          <div class="portrait-caption"><span>SA</span><span>PERSONAL PROFILE<br>2026</span></div>
+
+      <div class="hero-visual" data-reveal-group>
+        <div class="portrait-frame" data-reveal>
+          <img class="profile-image" src="assets/images/profile.jpg" data-profile-image alt="Foto profil Siti Alawiyah" width="600" height="760" decoding="async">
+          <div class="portrait-caption">
+            <span>SA</span>
+            <span>PERSONAL PROFILE<br>2026</span>
+          </div>
         </div>
         <div class="visual-stamp">OPEN<br>TO<br>GROW</div>
-        <div class="visual-note note-bottom">TEKNIK JARINGAN<br>& TELEKOMUNIKASI</div>
+        <div class="visual-note note-bottom" data-reveal>TEKNIK JARINGAN<br>& TELEKOMUNIKASI</div>
       </div>
-      <div class="hero-side-label">CREATIVE PORTFOLIO — 2026</div>
+
+      <div class="hero-side-label" aria-hidden="true">CREATIVE PORTFOLIO — 2026</div>
     </section>
 
-    <section class="intro-strip">
-      <p>BERKEMBANG DENGAN RASA INGIN TAHU</p><span>✳</span>
-      <p>DISIPLIN DALAM SETIAP PROSES</p><span>✳</span>
+    <section class="intro-strip" data-reveal>
+      <p>BERKEMBANG DENGAN RASA INGIN TAHU</p><span aria-hidden="true">✳</span>
+      <p>DISIPLIN DALAM SETIAP PROSES</p><span aria-hidden="true">✳</span>
       <p>SIAP BELAJAR HAL BARU</p>
     </section>
 
     <section class="content-section section-wrap" id="about">
-      <div class="section-heading">
+      <div class="section-heading" data-reveal>
         <p class="eyebrow">01 — PROFILE</p>
         <h2>Mengenal<br><em>lebih dekat.</em></h2>
       </div>
-      <div class="about-layout">
-        <p class="large-copy">Saya merupakan siswi SMKN 1 Rengasdengklok jurusan <strong>Teknik Jaringan Komputer dan Telekomunikasi</strong>. Saya memiliki pengalaman Praktik Kerja Lapangan (PKL) dan ketertarikan untuk terus mengembangkan kemampuan di bidang jaringan komputer, telekomunikasi, serta dunia teknologi.</p>
-        <div class="about-aside">
-          <span class="aside-mark">✳</span>
+      <div class="about-layout" data-reveal-group>
+        <p class="large-copy" data-reveal>Saya merupakan siswi SMKN 1 Rengasdengklok jurusan <strong>Teknik Jaringan Komputer dan Telekomunikasi</strong>. Saya memiliki pengalaman Praktik Kerja Lapangan (PKL) dan ketertarikan untuk terus mengembangkan kemampuan di bidang jaringan komputer, telekomunikasi, serta dunia teknologi.</p>
+        <div class="about-aside" data-reveal>
+          <span class="aside-mark" aria-hidden="true">✳</span>
           <p>Memiliki kemampuan analisis, disiplin, komunikasi, dan kemauan belajar yang baik. Saya siap beradaptasi dengan lingkungan kerja serta menjalankan tanggung jawab secara sungguh-sungguh.</p>
-          <a class="under-link" href="cv.html">Baca ringkasan CV <span>↗</span></a>
+          <a class="under-link" href="cv.html">Baca ringkasan CV <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </section>
 
-    <section class="content-section section-wrap skills-section" id="skills">
-      <div class="section-heading row-heading">
-        <div><p class="eyebrow">02 — CAPABILITIES</p><h2>Keahlian &<br><em>kemampuan.</em></h2></div>
-        <p class="heading-aside">Kemampuan yang dikembangkan melalui pembelajaran di sekolah dan pengalaman praktik.</p>
+    <section class="content-section skills-section" id="skills">
+      <div class="section-wrap">
+        <div class="section-heading row-heading" data-reveal>
+          <div>
+            <p class="eyebrow">02 — CAPABILITIES</p>
+            <h2>Keahlian &<br><em>kemampuan.</em></h2>
+          </div>
+          <p class="heading-aside">Kemampuan yang dikembangkan melalui pembelajaran di sekolah dan pengalaman praktik.</p>
+        </div>
+
+        <div class="skills-grid" data-reveal-group>
+          <article class="skill-card skill-featured" data-reveal>
+            <span class="skill-number">01</span>
+            <span class="skill-icon" aria-hidden="true">⌘</span>
+            <h3>Instalasi Windows</h3>
+            <p>Melakukan instalasi sistem operasi Windows.</p>
+            <span class="skill-tag">TEKNIS</span>
+          </article>
+          <article class="skill-card" data-reveal>
+            <span class="skill-number">02</span>
+            <span class="skill-icon" aria-hidden="true">⌁</span>
+            <h3>Simulasi Jaringan Cisco</h3>
+            <p>Memahami simulasi jaringan menggunakan Cisco.</p>
+            <span class="skill-tag">TEKNIS</span>
+          </article>
+          <article class="skill-card" data-reveal>
+            <span class="skill-number">03</span>
+            <span class="skill-icon" aria-hidden="true">◎</span>
+            <h3>Dasar MikroTik & IP</h3>
+            <p>Konfigurasi dasar MikroTik dan pengaturan IP address.</p>
+            <span class="skill-tag">TEKNIS</span>
+          </article>
+          <article class="skill-card" data-reveal>
+            <span class="skill-number">04</span>
+            <span class="skill-icon" aria-hidden="true">⌁</span>
+            <h3>Crimping Kabel LAN</h3>
+            <p>Melakukan praktik pemasangan konektor pada kabel LAN.</p>
+            <span class="skill-tag">TEKNIS</span>
+          </article>
+          <article class="skill-card skill-soft" data-reveal>
+            <span class="skill-number">05</span>
+            <span class="skill-icon" aria-hidden="true">✳</span>
+            <h3>Komunikasi</h3>
+            <p>Menyampaikan informasi dan berkoordinasi dengan baik.</p>
+            <span class="skill-tag">SOFT SKILL</span>
+          </article>
+          <article class="skill-card skill-soft" data-reveal>
+            <span class="skill-number">06</span>
+            <span class="skill-icon" aria-hidden="true">▤</span>
+            <h3>Microsoft Word</h3>
+            <p>Menggunakan Microsoft Word untuk kebutuhan dokumen.</p>
+            <span class="skill-tag">APLIKASI</span>
+          </article>
+          <article class="skill-card skill-soft" data-reveal>
+            <span class="skill-number">07</span>
+            <span class="skill-icon" aria-hidden="true">◈</span>
+            <h3>Problem Solving</h3>
+            <p>Menganalisis masalah dan mencari solusi yang sesuai.</p>
+            <span class="skill-tag">SOFT SKILL</span>
+          </article>
+          <article class="skill-card skill-soft" data-reveal>
+            <span class="skill-number">08</span>
+            <span class="skill-icon" aria-hidden="true">▧</span>
+            <h3>Dokumentasi & Fotografi</h3>
+            <p>Mendokumentasikan kegiatan melalui foto.</p>
+            <span class="skill-tag">KREATIF</span>
+          </article>
+          <article class="skill-card skill-soft" data-reveal>
+            <span class="skill-number">09</span>
+            <span class="skill-icon" aria-hidden="true">◷</span>
+            <h3>Time Management</h3>
+            <p>Mengatur waktu dan menyusun prioritas kegiatan.</p>
+            <span class="skill-tag">SOFT SKILL</span>
+          </article>
+        </div>
+
+        <p class="section-footnote" data-reveal>* Deskripsi kemampuan disusun berdasarkan informasi profil yang diberikan.</p>
       </div>
-      <div class="skills-grid">
-        <article class="skill-card skill-featured"><span class="skill-number">01</span><span class="skill-icon">⌘</span><h3>Instalasi Windows</h3><p>Melakukan instalasi sistem operasi Windows.</p><span class="skill-tag">TEKNIS</span></article>
-        <article class="skill-card"><span class="skill-number">02</span><span class="skill-icon">⌁</span><h3>Simulasi Jaringan Cisco</h3><p>Memahami simulasi jaringan menggunakan Cisco.</p><span class="skill-tag">TEKNIS</span></article>
-        <article class="skill-card"><span class="skill-number">03</span><span class="skill-icon">◎</span><h3>Dasar MikroTik & IP</h3><p>Konfigurasi dasar MikroTik dan pengaturan IP address.</p><span class="skill-tag">TEKNIS</span></article>
-        <article class="skill-card"><span class="skill-number">04</span><span class="skill-icon">⌁</span><h3>Crimping Kabel LAN</h3><p>Melakukan praktik pemasangan konektor pada kabel LAN.</p><span class="skill-tag">TEKNIS</span></article>
-        <article class="skill-card skill-soft"><span class="skill-number">05</span><span class="skill-icon">✳</span><h3>Komunikasi</h3><p>Menyampaikan informasi dan berkoordinasi dengan baik.</p><span class="skill-tag">SOFT SKILL</span></article>
-        <article class="skill-card skill-soft"><span class="skill-number">06</span><span class="skill-icon">▤</span><h3>Microsoft Word</h3><p>Menggunakan Microsoft Word untuk kebutuhan dokumen.</p><span class="skill-tag">APLIKASI</span></article>
-        <article class="skill-card skill-soft"><span class="skill-number">07</span><span class="skill-icon">◈</span><h3>Problem Solving</h3><p>Menganalisis masalah dan mencari solusi yang sesuai.</p><span class="skill-tag">SOFT SKILL</span></article>
-        <article class="skill-card skill-soft"><span class="skill-number">08</span><span class="skill-icon">▧</span><h3>Dokumentasi & Fotografi</h3><p>Mendokumentasikan kegiatan melalui foto.</p><span class="skill-tag">KREATIF</span></article>
-        <article class="skill-card skill-soft"><span class="skill-number">09</span><span class="skill-icon">◷</span><h3>Time Management</h3><p>Mengatur waktu dan menyusun prioritas kegiatan.</p><span class="skill-tag">SOFT SKILL</span></article>
-      </div>
-      <p class="section-footnote">* Deskripsi kemampuan disusun berdasarkan informasi profil yang diberikan.</p>
     </section>
 
     <section class="content-section experience-section" id="experience">
       <div class="section-wrap">
-        <div class="section-heading row-heading">
-          <div><p class="eyebrow">03 — EXPERIENCE</p><h2>Belajar dari<br><em>pengalaman.</em></h2></div>
+        <div class="section-heading row-heading" data-reveal>
+          <div>
+            <p class="eyebrow">03 — EXPERIENCE</p>
+            <h2>Belajar dari<br><em>pengalaman.</em></h2>
+          </div>
           <p class="heading-aside">Pengalaman Praktik Kerja Lapangan sebagai bagian dari proses mengenal lingkungan industri.</p>
         </div>
-        <article class="experience-card">
-          <div class="experience-top"><span class="eyebrow">PRAKTIK KERJA LAPANGAN</span><span class="date-label">06 JAN — 07 APR 2026</span></div>
+
+        <article class="experience-card" data-reveal>
+          <div class="experience-top">
+            <span class="eyebrow">PRAKTIK KERJA LAPANGAN</span>
+            <span class="date-label">06 JAN — 07 APR 2026</span>
+          </div>
           <h3>PT Bumjin Electronics Indonesia</h3>
           <p class="experience-role">Unit Department</p>
           <div class="task-list">
@@ -117,55 +243,144 @@
     </section>
 
     <section class="content-section section-wrap" id="education">
-      <div class="section-heading row-heading">
-        <div><p class="eyebrow">04 — EDUCATION</p><h2>Perjalanan<br><em>pendidikan.</em></h2></div>
+      <div class="section-heading row-heading" data-reveal>
+        <div>
+          <p class="eyebrow">04 — EDUCATION</p>
+          <h2>Perjalanan<br><em>pendidikan.</em></h2>
+        </div>
         <p class="heading-aside">Tahapan pendidikan yang membentuk dasar pengetahuan dan keterampilan.</p>
       </div>
-      <div class="timeline">
-        <article class="timeline-item"><span class="timeline-year">2024 — 2027</span><div><h3>SMKN 1 Rengasdengklok</h3><p>Teknik Jaringan Komputer dan Telekomunikasi</p><span class="timeline-status">SEDANG DITEMPUH</span></div></article>
-        <article class="timeline-item"><span class="timeline-year">2021 — 2024</span><div><h3>SMPN 1 Rengasdengklok</h3><p>Pendidikan Sekolah Menengah Pertama</p></div></article>
-        <article class="timeline-item"><span class="timeline-year">2015 — 2021</span><div><h3>SDN Rengasdengklok Selatan II</h3><p>Pendidikan Sekolah Dasar</p></div></article>
+
+      <div class="timeline" data-reveal-group>
+        <article class="timeline-item" data-reveal>
+          <span class="timeline-year">2024 — 2027</span>
+          <div>
+            <h3>SMKN 1 Rengasdengklok</h3>
+            <p>Teknik Jaringan Komputer dan Telekomunikasi</p>
+            <span class="timeline-status">SEDANG DITEMPUH</span>
+          </div>
+        </article>
+        <article class="timeline-item" data-reveal>
+          <span class="timeline-year">2021 — 2024</span>
+          <div>
+            <h3>SMPN 1 Rengasdengklok</h3>
+            <p>Pendidikan Sekolah Menengah Pertama</p>
+          </div>
+        </article>
+        <article class="timeline-item" data-reveal>
+          <span class="timeline-year">2015 — 2021</span>
+          <div>
+            <h3>SDN Rengasdengklok Selatan II</h3>
+            <p>Pendidikan Sekolah Dasar</p>
+          </div>
+        </article>
       </div>
     </section>
 
     <section class="content-section activity-section" id="activities">
       <div class="section-wrap">
-        <div class="section-heading"><p class="eyebrow">05 — ACTIVITIES</p><h2>Aktif dan<br><em>berpartisipasi.</em></h2></div>
-        <div class="activity-grid">
-          <article class="activity-card"><span class="activity-symbol">✚</span><div><p class="eyebrow">2024 — 2025</p><h3>Palang Merah Remaja (PMR)</h3><p>Anggota PMR dengan pengalaman kegiatan pertolongan pertama.</p></div></article>
-          <article class="activity-card"><span class="activity-symbol">↗</span><div><p class="eyebrow">2022 — 2025</p><h3>Badminton</h3><p>Anggota kegiatan badminton.</p></div></article>
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">05 — ACTIVITIES</p>
+          <h2>Aktif dan<br><em>berpartisipasi.</em></h2>
+        </div>
+        <div class="activity-grid" data-reveal-group>
+          <article class="activity-card" data-reveal>
+            <span class="activity-symbol" aria-hidden="true">✚</span>
+            <div>
+              <p class="eyebrow">2024 — 2025</p>
+              <h3>Palang Merah Remaja (PMR)</h3>
+              <p>Anggota PMR dengan pengalaman kegiatan pertolongan pertama.</p>
+            </div>
+          </article>
+          <article class="activity-card" data-reveal>
+            <span class="activity-symbol" aria-hidden="true">↗</span>
+            <div>
+              <p class="eyebrow">2022 — 2025</p>
+              <h3>Badminton</h3>
+              <p>Anggota kegiatan badminton.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
     <section class="content-section section-wrap" id="certificates">
-      <div class="section-heading row-heading">
-        <div><p class="eyebrow">06 — CERTIFICATES</p><h2>Apresiasi &<br><em>pembelajaran.</em></h2></div>
+      <div class="section-heading row-heading" data-reveal>
+        <div>
+          <p class="eyebrow">06 — CERTIFICATES</p>
+          <h2>Apresiasi &<br><em>pembelajaran.</em></h2>
+        </div>
         <p class="heading-aside">Dokumentasi partisipasi dan pencapaian dalam program pembelajaran.</p>
       </div>
-      <div class="certificate-list">
-        <article class="certificate-item"><span class="certificate-index">01</span><div><h3>Program Paham AI</h3><p>Literasi Kecerdasan Artifisial</p><small>Senopat Academy, Polri (KADIV TIK POLRI), Kemedikdasmen</small></div><time>02 SEP 2026</time></article>
-        <article class="certificate-item"><span class="certificate-index">02</span><div><h3>Certificate of Appreciation</h3><p>Ruang Menyala / OCBC</p></div><time>04 JUL 2026</time></article>
+
+      <div class="certificate-list" data-reveal-group>
+        <article class="certificate-item" data-reveal>
+          <span class="certificate-index">01</span>
+          <div>
+            <h3>Program Paham AI</h3>
+            <p>Literasi Kecerdasan Artifisial</p>
+            <small>Senopat Academy, Polri (KADIV TIK POLRI), Kemedikdasmen</small>
+          </div>
+          <time>02 SEP 2026</time>
+        </article>
+        <article class="certificate-item" data-reveal>
+          <span class="certificate-index">02</span>
+          <div>
+            <h3>Certificate of Appreciation</h3>
+            <p>Ruang Menyala / OCBC</p>
+          </div>
+          <time>04 JUL 2026</time>
+        </article>
       </div>
-      <p class="section-footnote">Nama penerbit ditulis mengikuti data awal yang diberikan; silakan cocokkan kembali dengan ejaan pada sertifikat fisik/digital.</p>
+
+      <p class="section-footnote" data-reveal>Nama penerbit ditulis mengikuti data awal yang diberikan; silakan cocokkan kembali dengan ejaan pada sertifikat fisik/digital.</p>
     </section>
 
     <section class="quote-section">
-      <div class="section-wrap quote-inner"><span class="quote-mark">“</span><blockquote>Pembelajar cepat yang siap beradaptasi, berdisiplin, dan berdedikasi untuk memberikan kontribusi nyata bagi tim.</blockquote><span class="quote-credit">— SITI ALAWIYAH</span></div>
+      <div class="section-wrap quote-inner" data-reveal>
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>Pembelajar cepat yang siap beradaptasi, berdisiplin, dan berdedikasi untuk memberikan kontribusi nyata bagi tim.</blockquote>
+        <span class="quote-credit">— SITI ALAWIYAH</span>
+      </div>
     </section>
 
     <section class="contact-section section-wrap" id="contact">
-      <div><p class="eyebrow">LET'S CONNECT</p><h2>Mari mulai<br><em>terhubung.</em></h2><p class="contact-intro">Terbuka untuk komunikasi, kesempatan belajar, dan pengalaman baru.</p></div>
-      <div class="contact-panel">
-        <a href="tel:085719763656"><span>TELEPON</span><strong>0857 1976 3656</strong><b>↗</b></a>
-        <a href="mailto:alys311009@gmail.com"><span>EMAIL</span><strong>alys311009@gmail.com</strong><b>↗</b></a>
-        <a href="https://instagram.com/alys.iii" target="_blank" rel="noopener noreferrer"><span>INSTAGRAM</span><strong>@alys.iii</strong><b>↗</b></a>
-        <div class="contact-address"><span>ALAMAT</span><p>Blok Kraton RT 27 RW 006, Desa Rengasdengklok Selatan, Kec. Rengasdengklok</p></div>
+      <div data-reveal>
+        <p class="eyebrow">LET'S CONNECT</p>
+        <h2>Mari mulai<br><em>terhubung.</em></h2>
+        <p class="contact-intro">Terbuka untuk komunikasi, kesempatan belajar, dan pengalaman baru.</p>
+      </div>
+
+      <div class="contact-panel" data-reveal-group>
+        <a href="tel:085719763656" data-reveal>
+          <span>TELEPON</span>
+          <strong>0857 1976 3656</strong>
+          <b aria-hidden="true">↗</b>
+        </a>
+        <a href="mailto:alys311009@gmail.com" data-reveal>
+          <span>EMAIL</span>
+          <strong>alys311009@gmail.com</strong>
+          <b aria-hidden="true">↗</b>
+        </a>
+        <a href="https://instagram.com/alys.iii" target="_blank" rel="noopener noreferrer" data-reveal>
+          <span>INSTAGRAM</span>
+          <strong>@alys.iii</strong>
+          <b aria-hidden="true">↗</b>
+        </a>
+        <div class="contact-address" data-reveal>
+          <span>ALAMAT</span>
+          <p>Blok Kraton RT 27 RW 006, Desa Rengasdengklok Selatan, Kec. Rengasdengklok</p>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer"><a class="wordmark" href="#home">SA<span>.</span></a><p>Dirancang sebagai ruang untuk memperkenalkan perjalanan dan kemampuan.</p><span>© <span id="year"></span> Siti Alawiyah</span></footer>
-  <a class="back-top" href="#home" aria-label="Kembali ke atas">↑</a>
+  <footer class="site-footer">
+    <a class="wordmark" href="#home" aria-label="Kembali ke beranda">SA<span>.</span></a>
+    <p>Dirancang sebagai ruang untuk memperkenalkan perjalanan dan kemampuan.</p>
+    <span>© <span data-year>2026</span> Siti Alawiyah</span>
+  </footer>
+
+  <a class="back-top" href="#home" data-back-top aria-label="Kembali ke atas">↑</a>
 </body>
 </html>
