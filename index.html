@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Siti Alawiyah | Creative Portfolio</title>
+    
+    <!-- Google Fonts: Outfit (Heading) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================
+           1. CSS VARIABLES & THEMES (VIBRANT PINK)
+           ========================================= */
+        :root {
+            /* Light Theme - Bright & Cheerful */
+            --bg-body: #fdf2f8;       
+            --bg-card: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.85);
+            --bg-accent-soft: rgba(236, 72, 153, 0.08);
+            --text-main: #111827;     
+            --text-muted: #4b5563;
+            --border-color: #fbcfe8;  
+            
+            /* Color Palette */
+            --pink: #ec4899;          /* Main Pink */
+            --cyan: #06b6d4;          /* Accent Cyan */
+            --purple: #8b5cf6;        /* Accent Purple */
+            --amber: #f59e0b;         /* Accent Amber */
+            
+            /* Shadows & Borders */
+            --shadow-sm: 0 2px 4px rgba(236, 72, 153, 0.05);
+            --shadow-md: 0 8px 24px rgba(236, 72, 153, 0.1);
+            --shadow-lg: 0 12px 32px rgba(236, 72, 153, 0.15);
+            --radius: 24px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme - Deep Berry & Safe Contrast */
+            --bg-body: #170312;       
+            --bg-card: #2a0a22;       
+            --bg-nav: rgba(23, 3, 18, 0.85);
+            --bg-accent-soft: rgba(236, 72, 153, 0.15);
+            --text-main: #fdf2f8;     
+            --text-muted: #d8b4e2;    
+            --border-color: #4c1d3f;  
+            
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        /* =========================================
+           2. RESET & BASE
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: background-color 0.4s, color 0.4s;
+            padding-bottom: 100px; /* Space untuk floating nav */
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* =========================================
+           3. TOP NAVBAR (GLASSMORPHISM)
+           ========================================= */
+        .top-navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background: var(--bg-nav);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1100px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--pink);
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .theme-toggle:hover { background: var(--bg-accent-soft); transform: scale(1.1) rotate(15deg); }
+
+        /* =========================================
+           4. MAIN LAYOUT (CSS GRID)
+           ========================================= */
+        .container {
+            max-width: 1100px;
+            margin: 90px auto 40px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .container { grid-template-columns: 340px 1fr; align-items: start; }
+            .sticky-sidebar { position: sticky; top: 90px; }
+        }
+
+        @media (min-width: 1024px) {
+            .container { grid-template-columns: 380px 1fr; gap: 32px; }
+        }
+
+        /* =========================================
+           5. CARD STYLES (VIBRANT & SOFT)
+           ========================================= */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-5px);
+        }
+
+        /* Aksen Garis Atas */
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+        }
+        .card-pink::before { background: linear-gradient(90deg, var(--pink), #f43f5e); }
+        .card-cyan::before { background: linear-gradient(90deg, var(--cyan), #3b82f6); }
+        .card-purple::before { background: linear-gradient(90deg, var(--purple), #6366f1); }
+        .card-amber::before { background: linear-gradient(90deg, var(--amber), #f97316); }
+
+        .sec-title {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            color: var(--text-main);
+        }
+
+        .sec-title i {
+            width: 42px; height: 42px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            background: var(--bg-accent-soft);
+            color: var(--pink);
+        }
+        .sec-title.icon-cyan i { background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+        .sec-title.icon-purple i { background: rgba(139, 92, 246, 0.1); color: var(--purple); }
+        .sec-title.icon-amber i { background: rgba(245, 158, 11, 0.1); color: var(--amber); }
+
+        /* =========================================
+           6. PROFILE HEADER
+           ========================================= */
+        .profile-header {
+            text-align: center;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 140px; height: 140px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            padding: 5px;
+            background: conic-gradient(from 0deg, var(--pink), var(--amber), var(--cyan), var(--purple), var(--pink));
+            animation: spin 6s linear infinite;
+        }
+
+        .avatar-inner {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: var(--bg-card);
+            padding: 4px;
+        }
+
+        .avatar-wrapper img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background-color: #ef4444; 
+            animation: spin-reverse 6s linear infinite; /* Agar foto tidak ikut berputar */
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
+
+        .profile-header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            color: var(--text-main);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        /* Typewriter */
+        .typewriter-container {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--pink);
+            height: 26px;
+            margin-bottom: 16px;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 2px; height: 16px;
+            background-color: var(--pink);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle; margin-left: 2px;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .bio-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-direction: column;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            cursor: pointer; border: none; transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--pink), #f43f5e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4); }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-main);
+        }
+        .btn-outline:hover { background: var(--bg-accent-soft); border-color: var(--pink); color: var(--pink); }
+
+        /* =========================================
+           7. CONTACT & SKILLS
+           ========================================= */
+        .contact-list { display: flex; flex-direction: column; gap: 18px; }
+        .contact-list li { display: flex; align-items: flex-start; gap: 14px; font-size: 0.9rem; color: var(--text-muted); }
+        
+        .contact-icon {
+            width: 38px; height: 38px; border-radius: 12px;
+            background: var(--bg-body);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--cyan); flex-shrink: 0; transition: var(--transition);
+        }
+        .contact-list li:hover .contact-icon { background: var(--cyan); color: white; transform: scale(1.1) rotate(5deg); }
+
+        .copy-btn {
+            background: none; border: none; color: var(--text-muted); cursor: pointer;
+            margin-left: auto; padding: 6px; transition: var(--transition); font-size: 1rem;
+        }
+        .copy-btn:hover { color: var(--pink); transform: scale(1.2); }
+
+        /* Skill Filter & Tags */
+        .filter-group { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
+        .filter-group::-webkit-scrollbar { height: 0; }
+        
+        .f-btn {
+            background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-muted);
+            padding: 8px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; cursor: pointer;
+            transition: var(--transition);
+        }
+        .f-btn.active { background: var(--pink); color: white; border-color: var(--pink); box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3); }
+
+        .skills-container { display: flex; flex-wrap: wrap; gap: 10px; }
+        
+        .skill-tag {
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .skill-tag i { color: var(--purple); font-size: 0.9rem; }
+        .skill-tag[data-type="soft"] i { color: var(--amber); }
+        
+        .skill-tag:hover {
+            border-color: var(--pink);
+            background: var(--bg-accent-soft);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .skill-tag.hide { display: none; }
+
+        /* =========================================
+           8. MAIN CONTENT (KANAN)
+           ========================================= */
+        .summary-box {
+            background: var(--bg-accent-soft);
+            border-left: 4px solid var(--pink);
+            padding: 20px; border-radius: 12px; margin-bottom: 16px;
+        }
+        .summary-box h4 { color: var(--pink); margin-bottom: 8px; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+        .summary-box p { font-size: 0.9rem; color: var(--text-muted); }
+        
+        .summary-box.cyan-box { background: rgba(6, 182, 212, 0.08); border-left-color: var(--cyan); }
+        .summary-box.cyan-box h4 { color: var(--cyan); }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 24px; border-left: 2px dashed var(--border-color); }
+        .timeline-item { position: relative; margin-bottom: 24px; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -31px; top: 4px; width: 14px; height: 14px;
+            border-radius: 50%; background: var(--bg-card); border: 3px solid var(--pink);
+            box-shadow: 0 0 0 4px var(--bg-accent-soft);
+        }
+        .date-badge {
+            font-size: 0.8rem; font-weight: 700; color: var(--pink);
+            background: var(--bg-accent-soft); padding: 6px 14px; border-radius: 8px;
+            display: inline-block; margin-bottom: 12px;
+        }
+        .t-title { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main); }
+        .t-sub { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 16px; font-weight: 500; }
+        
+        .task-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .task-list li { font-size: 0.9rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 10px; }
+        .task-list li i { color: var(--cyan); margin-top: 5px; font-size: 0.8rem; }
+
+        /* Grid 2 Kolom Desktop */
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        @media (min-width: 1024px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+
+        /* Accordion */
+        .acc-item {
+            border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; overflow: hidden;
+            background: var(--bg-card); transition: var(--transition); box-shadow: var(--shadow-sm);
+        }
+        .acc-item:hover { border-color: var(--purple); box-shadow: var(--shadow-md); }
+        .acc-header {
+            padding: 18px; display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; transition: background 0.3s;
+        }
+        .acc-header:hover { background: var(--bg-body); }
+        .acc-header.active { background: var(--bg-body); border-bottom: 1px solid var(--border-color); }
+        .acc-title h4 { font-size: 1rem; margin-bottom: 4px; color: var(--text-main); }
+        .acc-title span { font-size: 0.8rem; color: var(--pink); font-weight: 700; }
+        .acc-icon { color: var(--text-muted); transition: transform 0.4s; font-size: 0.9rem; }
+        .acc-header.active .acc-icon { transform: rotate(180deg); color: var(--purple); }
+        
+        .acc-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .acc-content { padding: 18px; font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; }
+
+        /* Quote Box */
+        .quote-box {
+            text-align: center; padding: 48px 24px;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(139, 92, 246, 0.08));
+            border-radius: var(--radius); border: 2px dashed var(--pink);
+            position: relative;
+        }
+        .quote-box i { font-size: 2.5rem; color: var(--pink); opacity: 0.3; margin-bottom: 16px; }
+        .quote-box p { font-family: 'Outfit', sans-serif; font-size: clamp(1.1rem, 2vw, 1.3rem); font-weight: 700; color: var(--text-main); max-width: 800px; margin: 0 auto; line-height: 1.5; }
+
+        /* =========================================
+           9. FLOATING BOTTOM NAVIGATION (MOBILE)
+           ========================================= */
+        .bottom-nav {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 40px); max-width: 400px; height: 70px;
+            background: var(--bg-nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color); border-radius: 40px;
+            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1), var(--shadow-md);
+            padding: 0 10px;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 0.75rem; font-weight: 600;
+            gap: 4px; width: 60px; height: 55px; border-radius: 20px; transition: var(--transition);
+        }
+        .nav-item i { font-size: 1.3rem; transition: var(--transition); }
+        .nav-item.active, .nav-item:hover { color: var(--pink); background: var(--bg-accent-soft); }
+        .nav-item.active i { transform: translateY(-3px) scale(1.1); }
+
+        @media (min-width: 768px) {
+            .bottom-nav { display: none; }
+            body { padding-bottom: 0; }
+        }
+
+        /* =========================================
+           10. TOAST & ANIMATIONS
+           ========================================= */
+        .toast {
+            position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: var(--pink); color: white;
+            padding: 14px 28px; border-radius: 50px; font-size: 0.95rem; font-weight: 600;
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4); 
+            opacity: 0; visibility: hidden; transition: var(--transition); z-index: 2000;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+        /* Scroll Reveal */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAVBAR -->
+    <nav class="top-navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <i class="fas fa-sparkles"></i> Siti A.
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        
+        <!-- KOLOM KIRI (SIDEBAR) -->
+        <aside class="sticky-sidebar" style="display: flex; flex-direction: column; gap: 24px;">
+            
+            <!-- PROFIL & BIO -->
+            <div class="card card-pink reveal">
+                <div class="profile-header">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-inner">
+                            <!-- GANTI URL DI BAWAH INI DENGAN FOTO LOKAL ANDA -->
+                            <img src="./profile.jpg" alt="Siti Alawiyah">
+                        </div>
+                    </div>
+                    <h1>Siti Alawiyah</h1>
+                    <div class="typewriter-container">
+                        <span id="typewriter"></span><span class="cursor"></span>
+                    </div>
+                    <p class="bio-text">
+                        Saya adalah siswi SMKN 1 Rengasdengklok dengan jurusan Teknik Jaringan Komputer dan Telekomunikasi. Memiliki semangat belajar yang tinggi, disiplin, serta berkomitmen untuk terus berkembang dan memberikan kontribusi positif di lingkungan kerja maupun masyarakat.
+                    </p>
+                    <div class="btn-group">
+                        <a href="https://wa.me/6285719763656" target="_blank" class="btn btn-primary">
+                            <i class="fab fa-whatsapp"></i> Hubungi via WA
+                        </a>
+                        <a href="mailto:alys311009@gmail.com" class="btn btn-outline">
+                            <i class="fas fa-envelope"></i> Kirim Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KONTAK -->
+            <div class="card card-cyan reveal delay-1">
+                <h2 class="sec-title icon-cyan"><i class="fas fa-address-book"></i> Informasi Kontak</h2>
+                <ul class="contact-list">
+                    <li>
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <span>Blok Kraton RT 27 RW 006, Desa Rengasdengklok Selatan, Kec. Rengasdengklok</span>
+                    </li>
+                    <li>
+                        <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+                        <span>0857-1976-3656</span>
+                        <button class="copy-btn" onclick="copyText('085719763656')" title="Salin No. HP"><i class="far fa-copy"></i></button>
+                    </li>
+                    <li>
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <span>alys311009@gmail.com</span>
+                        <button class="copy-btn" onclick="copyText('alys311009@gmail.com')" title="Salin Email"><i class="far fa-copy"></i></button>
+                    </li>
+                    <li>
+                        <div class="contact-icon"><i class="fab fa-instagram"></i></div>
+                        <span>@alys.iii</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- KEAHLIAN (TANPA PERSENTASE) -->
+            <div class="card card-purple reveal delay-2">
+                <h2 class="sec-title icon-purple"><i class="fas fa-code"></i> Keahlian</h2>
+                
+                <div class="filter-group">
+                    <button class="f-btn active" onclick="filterSkills('all', this)">Semua</button>
+                    <button class="f-btn" onclick="filterSkills('hard', this)">Teknis</button>
+                    <button class="f-btn" onclick="filterSkills('soft', this)">Soft Skill</button>
+                </div>
+
+                <div class="skills-container" id="skills-container">
+                    <!-- Hard Skills -->
+                    <span class="skill-tag" data-type="hard"><i class="fas fa-network-wired"></i> MikroTik</span>
+                    <span class="skill-tag" data-type="hard"><i class="fab fa-windows"></i> Instalasi Windows</span>
+                    <span class="skill-tag" data-type="hard"><i class="fas fa-server"></i> Simulasi Cisco</span>
+                    <span class="skill-tag" data-type="hard"><i class="fas fa-ethernet"></i> Crimping LAN</span>
+                    <span class="skill-tag" data-type="hard"><i class="fas fa-camera"></i> Fotografi</span>
+                    <span class="skill-tag" data-type="hard"><i class="fas fa-file-word"></i> Ms. Word</span>
+                    
+                    <!-- Soft Skills -->
+                    <span class="skill-tag" data-type="soft"><i class="fas fa-brain"></i> Problem Solving</span>
+                    <span class="skill-tag" data-type="soft"><i class="fas fa-clock"></i> Manajemen Waktu</span>
+                    <span class="skill-tag" data-type="soft"><i class="fas fa-comments"></i> Komunikasi</span>
+                    <span class="skill-tag" data-type="soft"><i class="fas fa-shield-alt"></i> Disiplin</span>
+                    <span class="skill-tag" data-type="soft"><i class="fas fa-rocket"></i> Fast Learner</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- KOLOM KANAN (KONTEN UTAMA) -->
+        <main style="display: flex; flex-direction: column; gap: 24px;">
+            
+            <!-- RINGKASAN & TUJUAN KARIER -->
+            <div class="card card-pink reveal delay-1" id="ringkasan">
+                <h2 class="sec-title"><i class="fas fa-bullseye"></i> Profil & Tujuan Karier</h2>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.7;">
+                    Siswi jurusan Teknik Jaringan Komputer dan Telekomunikasi dengan pengalaman PKL di industri manufaktur/elektronika.
+                </p>
+                
+                <div class="summary-box">
+                    <h4><i class="fas fa-check-circle"></i> Pencapaian Terukur</h4>
+                    <p>Mampu melakukan instalasi Windows, simulasi jaringan menggunakan Cisco, konfigurasi dasar MikroTik dan IP Address, serta melakukan crimping kabel LAN sesuai standar prosedur operasional (SOP).</p>
+                </div>
+                <div class="summary-box cyan-box" style="margin-bottom: 0;">
+                    <h4><i class="fas fa-flag"></i> Tujuan Karier</h4>
+                    <p>Mengembangkan kompetensi tingkat lanjut di bidang jaringan komputer dan telekomunikasi, serta berkarier secara profesional di industri teknologi global.</p>
+                </div>
+            </div>
+
+            <!-- PENGALAMAN KERJA -->
+            <div class="card card-cyan reveal delay-2" id="pengalaman">
+                <h2 class="sec-title icon-cyan"><i class="fas fa-briefcase"></i> Pengalaman Kerja</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="date-badge">06 Januari – 07 April 2026</div>
+                        <h4 class="t-title">Praktik Kerja Lapangan (PKL)</h4>
+                        <div class="t-sub">PT Bumin Electronics Indonesia | Unit Department</div>
+                        <ul class="task-list">
+                            <li><i class="fas fa-check-circle"></i> Open JIG & input data</li>
+                            <li><i class="fas fa-check-circle"></i> Proses packing produk</li>
+                            <li><i class="fas fa-check-circle"></i> Assy T.J. (Assembly)</li>
+                            <li><i class="fas fa-check-circle"></i> Open Tinsel Wire</li>
+                            <li><i class="fas fa-check-circle"></i> Memasang spons & cutting</li>
+                            <li><i class="fas fa-check-circle"></i> Assy U_YOKE</li>
+                            <li><i class="fas fa-check-circle"></i> Memasang Sliped</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PENDIDIKAN -->
+            <div class="card card-amber reveal delay-3" id="pendidikan">
+                <h2 class="sec-title icon-amber"><i class="fas fa-graduation-cap"></i> Pendidikan</h2>
+                
+                <div class="acc-item">
+                    <div class="acc-header" onclick="toggleAcc(this)">
+                        <div class="acc-title">
+                            <h4>SMKN 1 Rengasdengklok</h4>
+                            <span>2024 – 2027</span>
+                        </div>
+                        <i class="fas fa-chevron-down acc-icon"></i>
+                    </div>
+                    <div class="acc-body">
+                        <div class="acc-content">
+                            <strong>Jurusan:</strong> Teknik Jaringan Komputer dan Telekomunikasi.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="acc-item">
+                    <div class="acc-header" onclick="toggleAcc(this)">
+                        <div class="acc-title">
+                            <h4>SMPN 1 Rengasdengklok</h4>
+                            <span>2021 – 2024</span>
+                        </div>
+                        <i class="fas fa-chevron-down acc-icon"></i>
+                    </div>
+                    <div class="acc-body">
+                        <div class="acc-content">
+                            Menempuh pendidikan menengah pertama.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="acc-item">
+                    <div class="acc-header" onclick="toggleAcc(this)">
+                        <div class="acc-title">
+                            <h4>SDN Rengasdengklok Selatan II</h4>
+                            <span>2015 – 2021</span>
+                        </div>
+                        <i class="fas fa-chevron-down acc-icon"></i>
+                    </div>
+                    <div class="acc-body">
+                        <div class="acc-content">
+                            Menempuh pendidikan dasar.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ORGANISASI & SERTIFIKASI -->
+            <div class="grid-2" id="organisasi">
+                
+                <!-- Organisasi -->
+                <div class="card card-purple reveal delay-3">
+                    <h2 class="sec-title icon-purple"><i class="fas fa-users"></i> Organisasi</h2>
+                    
+                    <div class="acc-item">
+                        <div class="acc-header" onclick="toggleAcc(this)">
+                            <div class="acc-title">
+                                <h4>Palang Merah Remaja (PMR)</h4>
+                                <span>Anggota | 2024 – 2025</span>
+                            </div>
+                            <i class="fas fa-chevron-down acc-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="acc-content">
+                                Tugas: Pertolongan Pertama (PP) dan penanganan darurat dasar.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="acc-item" style="margin-bottom: 0;">
+                        <div class="acc-header" onclick="toggleAcc(this)">
+                            <div class="acc-title">
+                                <h4>Badminton</h4>
+                                <span>Anggota | 2022 – 2025</span>
+                            </div>
+                            <i class="fas fa-chevron-down acc-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="acc-content">
+                                Mengembangkan sportivitas dan kebugaran fisik.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sertifikasi -->
+                <div class="card card-cyan reveal delay-3" id="sertifikasi">
+                    <h2 class="sec-title icon-cyan"><i class="fas fa-certificate"></i> Sertifikasi</h2>
+                    
+                    <div class="acc-item">
+                        <div class="acc-header" onclick="toggleAcc(this)">
+                            <div class="acc-title">
+                                <h4>Program Paham AI</h4>
+                                <span>02 September 2026</span>
+                            </div>
+                            <i class="fas fa-chevron-down acc-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="acc-content">
+                                <strong>Literasi Kecerdasan Artifisial.</strong><br>
+                                Diterbitkan oleh Senopati Academy, Polri (KADIV TIK POLRI), dan Kemendikdasmen.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="acc-item" style="margin-bottom: 0;">
+                        <div class="acc-header" onclick="toggleAcc(this)">
+                            <div class="acc-title">
+                                <h4>Certificate of Appreciation</h4>
+                                <span>04 Juli 2026</span>
+                            </div>
+                            <i class="fas fa-chevron-down acc-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="acc-content">
+                                Diterbitkan oleh Ruang Menyala / OCBC.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- QUOTE / MOTTO -->
+            <div class="quote-box reveal delay-3">
+                <i class="fas fa-quote-left"></i>
+                <p>"Pembelajar cepat yang siap beradaptasi, berdisiplin, dan berdedikasi untuk memberikan kontribusi nyata bagi tim."</p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- FLOATING BOTTOM NAVIGATION (MOBILE) -->
+    <nav class="bottom-nav">
+        <a href="#ringkasan" class="nav-item active" onclick="setActiveNav(this)">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#pengalaman" class="nav-item" onclick="setActiveNav(this)">
+            <i class="fas fa-briefcase"></i>
+            <span>Kerja</span>
+        </a>
+        <a href="#pendidikan" class="nav-item" onclick="setActiveNav(this)">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Edu</span>
+        </a>
+        <a href="#organisasi" class="nav-item" onclick="setActiveNav(this)">
+            <i class="fas fa-users"></i>
+            <span>Org</span>
+        </a>
+    </nav>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i> <span id="toast-msg">Tersalin!</span>
+    </div>
+
+    <!-- =========================================
+         VANILLA JAVASCRIPT
+         ========================================= -->
+    <script>
+        // 1. THEME TOGGLE (LIGHT / DARK MODE)
+        const html = document.documentElement;
+        const themeIcon = document.getElementById('theme-icon');
+        
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        function toggleTheme() {
+            const theme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            updateThemeIcon(theme);
+        }
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+
+        // 2. TYPEWRITER EFFECT (SUB-JUDUL)
+        const texts = ["Siswa SMK TKJ", "Calon Tenaga Kerja", "Network Enthusiast"];
+        let count = 0;
+        let index = 0;
+        let currentText = "";
+        let letter = "";
+        let isDeleting = false;
+
+        function type() {
+            if (count === texts.length) count = 0;
+            currentText = texts[count];
+            
+            if (isDeleting) {
+                letter = currentText.slice(0, --index);
+            } else {
+                letter = currentText.slice(0, ++index);
+            }
+
+            document.getElementById('typewriter').textContent = letter;
+            
+            let typeSpeed = 100;
+            if (isDeleting) typeSpeed /= 2; 
+
+            if (!isDeleting && letter.length === currentText.length) {
+                typeSpeed = 2000; 
+                isDeleting = true;
+            } else if (isDeleting && letter.length === 0) {
+                isDeleting = false;
+                count++;
+                typeSpeed = 500; 
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+        document.addEventListener("DOMContentLoaded", () => setTimeout(type, 1000));
+
+        // 3. SCROLL REVEAL ANIMATION
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 4. COPY TO CLIPBOARD & TOAST
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Berhasil disalin: ' + text);
+            }).catch(err => {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast('Berhasil disalin!');
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // 5. ACCORDION (ANTI BUG)
+        function toggleAcc(header) {
+            const body = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+
+            // Tutup semua accordion lain
+            document.querySelectorAll('.acc-header').forEach(h => {
+                h.classList.remove('active');
+                h.nextElementSibling.style.maxHeight = null;
+            });
+
+            if (!isActive) {
+                header.classList.add('active');
+                // Gunakan scrollHeight agar dinamis sesuai konten
+                body.style.maxHeight = body.scrollHeight + "px";
+            }
+        }
+
+        // 6. SKILLS FILTERING (TANPA PERSENTASE)
+        function filterSkills(type, btn) {
+            document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.skill-tag').forEach(item => {
+                const itemType = item.getAttribute('data-type');
+                if (type === 'all' || type === itemType) {
+                    item.classList.remove('hide');
+                } else {
+                    item.classList.add('hide');
+                }
+            });
+        }
+
+        // 7. ACTIVE STATE FOR BOTTOM NAVIGATION ON SCROLL
+        const sections = document.querySelectorAll('main > div[id], div.grid-2 > div[id]');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        function setActiveNav(element) {
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            element.classList.add('active');
+        }
+    </script>
+</body>
+</html>
