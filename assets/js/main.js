@@ -1,257 +1,241 @@
+/*
+ * Siti Alawiyah — main.js
+ * Tema, scroll progress, state header, reveal-on-scroll, menu mobile, active nav.
+ * Setiap fitur dijalankan terpisah (run) agar satu error tidak menghentikan fitur lain.
+ * Aman dipakai di halaman yang tidak memiliki elemen tertentu.
+ */
 (() => {
-  'use strict';
+  "use strict";
 
   const root = document.documentElement;
-  const THEME_KEY = 'siti-theme';
+  const THEME_KEY = "siti-theme";
+  const THEME_COLORS = { light: "#f4eee6", dark: "#1b1c19" };
 
-  /* ----------------------------------------------------------------------
-     Theme
-     ---------------------------------------------------------------------- */
+  const noopQuery = { matches: false, addEventListener() {}, addListener() {} };
+  const mq = (query) => (window.matchMedia ? window.matchMedia(query) : noopQuery);
+  const listen = (query, fn) => {
+    if (query.addEventListener) query.addEventListener("change", fn);
+    else if (query.addListener) query.addListener(fn);
+  };
 
-  const getStoredTheme = () => {
-    try {
-      const value = localStorage.getItem(THEME_KEY);
-      return value === 'light' || value === 'dark' ? value : null;
-    } catch (_) {
-      return null;
+  const prefersDark = mq("(prefers-color-scheme: dark)");
+  const prefersReduced = mq("(prefers-reduced-motion: reduce)");
+  const finePointer = mq("(hover: hover) and (pointer: fine)");
+
+  const run = (name, fn) => {
+    try { fn(); } catch (err) {
+      if (window.console) console.warn("[portfolio] " + name + " gagal:", err);
     }
   };
 
-  const storeTheme = (value) => {
-    try {
-      localStorage.setItem(THEME_KEY, value);
-    } catch (_) {
-      /* Storage bisa diblokir; tema tetap berjalan untuk sesi ini. */
-    }
-  };
+  /* ---------- Tema ---------- */
+  function initTheme() {
+    const toggle = document.getElementById("themeToggle");
+    const meta = document.querySelector('meta[name="theme-color"]');
+    let animTimer = 0;
 
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  const themeButtons = Array.from(document.querySelectorAll('[data-theme-toggle]'));
-
-  const applyTheme = (theme, persist) => {
-    const next = theme === 'dark' ? 'dark' : 'light';
-    root.dataset.theme = next;
-
-    if (persist) storeTheme(next);
-
-    if (themeMeta) {
-      themeMeta.setAttribute('content', next === 'dark' ? '#1b1c19' : '#f4eee6');
-    }
-
-    themeButtons.forEach((button) => {
-      const isDark = next === 'dark';
-      button.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-      button.setAttribute('aria-label', isDark ? 'Aktifkan mode terang' : 'Aktifkan mode gelap');
-      button.title = isDark ? 'Mode terang' : 'Mode gelap';
-    });
-  };
-
-  const initialTheme = (() => {
-    if (root.dataset.theme === 'dark' || root.dataset.theme === 'light') {
-      return root.dataset.theme;
-    }
-
-    const stored = getStoredTheme();
-    if (stored) return stored;
-
-    try {
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    } catch (_) {
-      return 'light';
-    }
-  })();
-
-  applyTheme(initialTheme, false);
-
-  themeButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true);
-    });
-  });
-
-  if (window.matchMedia) {
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
-    const onSystemThemeChange = (event) => {
-      if (getStoredTheme()) return;
-      applyTheme(event.matches ? 'dark' : 'light', false);
+    const stored = () => {
+      try {
+        const value = localStorage.getItem(THEME_KEY);
+        return value === "dark" || value === "light" ? value : null;
+      } catch (_) { return null; }
     };
+    const systemTheme = () => (prefersDark.matches ? "dark" : "light");
+    const current = () => (root.dataset.theme === "dark" ? "dark" : "light");
 
-    if (typeof systemTheme.addEventListener === 'function') {
-      systemTheme.addEventListener('change', onSystemThemeChange);
-    } else if (typeof systemTheme.addListener === 'function') {
-      systemTheme.addListener(onSystemThemeChange);
-    }
-  }
-
-  /* ----------------------------------------------------------------------
-     Year
-     ---------------------------------------------------------------------- */
-
-  document.querySelectorAll('[data-year]').forEach((element) => {
-    element.textContent = String(new Date().getFullYear());
-  });
-
-  /* ----------------------------------------------------------------------
-     Print
-     ---------------------------------------------------------------------- */
-
-  document.querySelectorAll('[data-print]').forEach((button) => {
-    button.addEventListener('click', () => {
-      window.print();
-    });
-  });
-
-  /* ----------------------------------------------------------------------
-     Mobile menu
-     ---------------------------------------------------------------------- */
-
-  const menuToggle = document.querySelector('[data-menu-toggle]');
-  const mobileNav = document.querySelector('[data-mobile-nav]');
-
-  if (menuToggle && mobileNav) {
-    const setMenuOpen = (open) => {
-      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      menuToggle.setAttribute('aria-label', open ? 'Tutup menu navigasi' : 'Buka menu navigasi');
-      mobileNav.classList.toggle('is-open', open);
-    };
-
-    menuToggle.addEventListener('click', () => {
-      setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true');
-    });
-
-    mobileNav.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => setMenuOpen(false));
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
-        setMenuOpen(false);
-        menuToggle.focus();
+    const apply = (theme, animate) => {
+      if (animate && !prefersReduced.matches) {
+        root.classList.add("theme-anim");
+        clearTimeout(animTimer);
+        animTimer = setTimeout(() => root.classList.remove("theme-anim"), 500);
       }
-    });
+      root.dataset.theme = theme;
+      if (meta) meta.setAttribute("content", THEME_COLORS[theme]);
+      if (toggle) {
+        toggle.setAttribute("aria-pressed", String(theme === "dark"));
+        toggle.title = theme === "dark" ? "Beralih ke mode terang" : "Beralih ke mode gelap";
+      }
+    };
 
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 800) setMenuOpen(false);
-    }, { passive: true });
-  }
+    apply(stored() || systemTheme(), false);
 
-  /* ----------------------------------------------------------------------
-     Reveal on scroll
-     ---------------------------------------------------------------------- */
-
-  const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const revealTargets = Array.from(document.querySelectorAll('[data-reveal]'));
-
-  if (!reduceMotion) {
-    document.querySelectorAll('[data-reveal-group]').forEach((group) => {
-      const items = Array.from(group.querySelectorAll('[data-reveal]'));
-      items.forEach((element, index) => {
-        element.style.setProperty('--reveal-delay', Math.min(index * 70, 420) + 'ms');
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        const next = current() === "dark" ? "light" : "dark";
+        apply(next, true);
+        try { localStorage.setItem(THEME_KEY, next); } catch (_) {}
       });
+    }
+
+    // Ikuti perubahan tema sistem selama pengguna belum memilih sendiri.
+    listen(prefersDark, () => { if (!stored()) apply(systemTheme(), true); });
+    // Sinkron antar-tab.
+    window.addEventListener("storage", (event) => {
+      if (event.key === THEME_KEY) apply(stored() || systemTheme(), true);
     });
   }
 
-  const revealAll = () => {
-    revealTargets.forEach((element) => element.classList.add('is-revealed'));
-    window.__sitiRevealReady = true;
-  };
+  /* ---------- Tahun footer ---------- */
+  function initYear() {
+    const year = document.getElementById("year");
+    if (year) year.textContent = new Date().getFullYear();
+  }
 
-  if (!revealTargets.length) {
-    window.__sitiRevealReady = true;
-  } else if (reduceMotion || !('IntersectionObserver' in window)) {
-    revealAll();
-  } else {
-    try {
-      const revealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-revealed');
-          observer.unobserve(entry.target);
+  /* ---------- Menu mobile ---------- */
+  function initMenu() {
+    const button = document.getElementById("menuToggle");
+    const panel = document.getElementById("mobileNav");
+    if (!button || !panel) return;
+
+    const isOpen = () => panel.classList.contains("is-open");
+    const setOpen = (open, returnFocus) => {
+      panel.classList.toggle("is-open", open);
+      button.classList.toggle("is-open", open);
+      button.setAttribute("aria-expanded", String(open));
+      if (!open && returnFocus) button.focus();
+    };
+
+    button.addEventListener("click", () => setOpen(!isOpen()));
+    panel.addEventListener("click", (event) => {
+      if (event.target.closest("a")) setOpen(false);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isOpen()) setOpen(false, true);
+    });
+    document.addEventListener("click", (event) => {
+      if (isOpen() && !panel.contains(event.target) && !button.contains(event.target)) setOpen(false);
+    });
+    const desktop = mq("(min-width: 981px)");
+    listen(desktop, () => { if (desktop.matches) setOpen(false); });
+  }
+
+  /* ---------- Scroll: progress, header, back-to-top, parallax, active nav ---------- */
+  function initScrollEffects() {
+    const header = document.querySelector(".site-header");
+    const progress = document.getElementById("scrollProgress");
+    const backTop = document.querySelector(".back-top");
+    const heroVisual = document.querySelector(".hero-visual");
+
+    const navLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]')];
+    const sections = [];
+    navLinks.forEach((link) => {
+      const id = link.getAttribute("href").slice(1);
+      const el = id ? document.getElementById(id) : null;
+      if (el && !sections.some((s) => s.id === id)) sections.push({ id, el });
+    });
+    sections.sort((a, b) => (a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
+
+    let ticking = false;
+    let lastShift = -1;
+    let lastActive = null;
+
+    const parallaxOn = () => !prefersReduced.matches && finePointer.matches;
+
+    const update = () => {
+      ticking = false;
+      const y = window.pageYOffset || root.scrollTop || 0;
+      const maxScroll = Math.max(0, root.scrollHeight - window.innerHeight);
+
+      if (header) header.classList.toggle("is-scrolled", y > 8);
+      if (progress) progress.style.setProperty("--progress", (maxScroll ? Math.min(1, y / maxScroll) : 0).toFixed(4));
+      if (backTop) backTop.classList.toggle("is-visible", y > 600);
+
+      if (heroVisual) {
+        const shift = parallaxOn() ? Math.min(Math.round(y), 800) : 0;
+        if (shift !== lastShift) {
+          lastShift = shift;
+          heroVisual.style.setProperty("--hero-shift", String(shift));
+        }
+      }
+
+      if (sections.length) {
+        const headerH = header ? header.offsetHeight : 76;
+        const probe = y + headerH + window.innerHeight * 0.3;
+        let activeId = "";
+        sections.forEach((s) => {
+          if (s.el.getBoundingClientRect().top + y <= probe) activeId = s.id;
         });
-      }, {
-        threshold: 0.12,
-        rootMargin: '0px 0px -8% 0px'
-      });
+        if (maxScroll && y >= maxScroll - 4) activeId = sections[sections.length - 1].id;
 
-      revealTargets.forEach((element) => revealObserver.observe(element));
-      window.__sitiRevealReady = true;
-    } catch (_) {
-      revealAll();
-    }
+        if (activeId !== lastActive) {
+          lastActive = activeId;
+          navLinks.forEach((link) => {
+            const on = link.getAttribute("href") === "#" + activeId;
+            link.classList.toggle("active", on);
+            if (on) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+          });
+        }
+      }
+    };
+
+    const requestUpdate = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate, { passive: true });
+    window.addEventListener("load", requestUpdate);
+    listen(prefersReduced, requestUpdate);
+    update();
   }
 
-  /* ----------------------------------------------------------------------
-     Scroll UI: progress, header state, back to top, active navigation
-     ---------------------------------------------------------------------- */
+  /* ---------- Reveal on scroll ---------- */
+  function initReveal() {
+    // Penanda untuk fallback di <head>: JS utama berjalan, elemen tidak perlu dipaksa tampil.
+    root.classList.add("reveal-ready");
 
-  const progress = document.querySelector('[data-scroll-progress]');
-  const header = document.querySelector('[data-header]');
-  const backTop = document.querySelector('[data-back-top]');
+    const targets = [...document.querySelectorAll("[data-reveal]")];
+    if (!targets.length) return;
 
-  const navLinks = Array.from(document.querySelectorAll('.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]'));
-  const navHrefs = Array.from(new Set(navLinks.map((link) => link.getAttribute('href')).filter((href) => href && href.length > 1)));
-  const navSections = navHrefs
-    .map((href) => ({ id: href.slice(1), element: document.getElementById(href.slice(1)) }))
-    .filter((item) => item.element);
+    // Setelah animasi selesai, lepaskan atribut agar hover/transform komponen kembali normal.
+    const finish = (el) => {
+      el.removeAttribute("data-reveal");
+      el.classList.remove("is-visible");
+      el.style.removeProperty("--d");
+    };
 
-  let ticking = false;
-
-  const updateScrollUI = () => {
-    ticking = false;
-
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-    const docHeight = document.documentElement.scrollHeight;
-    const viewport = window.innerHeight || document.documentElement.clientHeight;
-    const maxScroll = Math.max(1, docHeight - viewport);
-
-    if (progress) {
-      const ratio = Math.min(1, Math.max(0, scrollTop / maxScroll));
-      progress.style.transform = 'scaleX(' + ratio + ')';
+    if (prefersReduced.matches || !("IntersectionObserver" in window)) {
+      targets.forEach(finish);
+      return;
     }
 
-    if (header) {
-      header.classList.toggle('is-scrolled', scrollTop > 24);
-    }
+    const STEP = 70;
+    const MAX_STEPS = 6;
+    let pending = targets.length;
 
-    if (backTop) {
-      backTop.classList.toggle('is-visible', scrollTop > 480);
-    }
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top || a.boundingClientRect.left - b.boundingClientRect.left);
 
-    if (navSections.length) {
-      const probe = scrollTop + (header ? header.offsetHeight : 76) + 90;
-      let current = null;
-      let currentTop = -Infinity;
-
-      navSections.forEach((item) => {
-        const top = item.element.getBoundingClientRect().top + scrollTop;
-        if (top <= probe && top > currentTop) {
-          currentTop = top;
-          current = item;
-        }
+      visible.forEach((entry, index) => {
+        const el = entry.target;
+        observer.unobserve(el);
+        const delay = Math.min(index, MAX_STEPS) * STEP;
+        el.style.setProperty("--d", delay + "ms");
+        el.classList.add("is-visible");
+        window.setTimeout(() => finish(el), delay + 1000);
+        pending -= 1;
       });
 
-      const currentId = current ? current.id : null;
+      if (pending <= 0) observer.disconnect();
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
 
-      navLinks.forEach((link) => {
-        const isActive = !!currentId && link.getAttribute('href') === '#' + currentId;
-        link.classList.toggle('active', isActive);
+    targets.forEach((el) => observer.observe(el));
+  }
 
-        if (isActive) {
-          link.setAttribute('aria-current', 'true');
-        } else {
-          link.removeAttribute('aria-current');
-        }
-      });
-    }
+  const start = () => {
+    run("tema", initTheme);
+    run("tahun", initYear);
+    run("menu", initMenu);
+    run("scroll", initScrollEffects);
+    run("reveal", initReveal);
   };
 
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(updateScrollUI);
-  };
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-  updateScrollUI();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
+  else start();
 })();

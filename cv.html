@@ -1,130 +1,32 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Curriculum Vitae Siti Alawiyah">
+  <meta name="color-scheme" content="light">
   <title>CV — Siti Alawiyah</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/cv.css">
   <script src="assets/js/image-cache.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/cv.js" defer></script>
 </head>
 <body>
-  <div class="cv-toolbar">
-    <a href="index.html">← Kembali ke portfolio</a>
-    <button class="print-button" type="button" data-print>Cetak / Simpan PDF <span aria-hidden="true">↗</span></button>
-  </div>
-
+  <div class="cv-toolbar"><a href="index.html">← Kembali ke portfolio</a><button id="printButton" type="button" hidden>Cetak / Simpan PDF <span aria-hidden="true">↗</span></button></div>
   <main class="resume">
     <header class="resume-header">
-      <div>
-        <p class="resume-kicker">CURRICULUM VITAE</p>
-        <h1>Siti Alawiyah</h1>
-        <p class="resume-role">Siswa SMK • Calon Tenaga Kerja Industri</p>
-      </div>
-      <img class="profile-image resume-photo" src="assets/images/profile.jpg" data-profile-image alt="Foto profil Siti Alawiyah" width="600" height="760" decoding="async">
+      <div><p class="resume-kicker">CURRICULUM VITAE</p><h1>Siti Alawiyah</h1><p class="resume-role">Siswa SMK • Calon Tenaga Kerja Industri</p></div>
+      <img class="profile-image resume-photo" src="assets/images/profile.jpg" data-profile-image alt="Foto profil Siti Alawiyah">
     </header>
-
     <div class="resume-contact">
-      <span>0857 1976 3656</span>
-      <span>alys311009@gmail.com</span>
-      <span>@alys.iii</span>
+      <span>0857 1976 3656</span><span>alys311009@gmail.com</span><span>@alys.iii</span>
       <span>Blok Kraton RT 27 RW 006, Desa Rengasdengklok Selatan, Kec. Rengasdengklok</span>
     </div>
-
-    <section class="resume-section">
-      <h2>Profil</h2>
-      <p>Siswi SMKN 1 Rengasdengklok jurusan Teknik Jaringan Komputer dan Telekomunikasi yang memiliki pengalaman Praktik Kerja Lapangan (PKL). Memiliki ketertarikan pada bidang jaringan komputer dan telekomunikasi, serta kemampuan instalasi Windows, simulasi jaringan Cisco, konfigurasi dasar MikroTik/IP address, dan crimping kabel LAN. Memiliki kemampuan analisis, disiplin, komunikasi, serta kemauan belajar yang baik. Siap beradaptasi dan mengembangkan kemampuan di lingkungan kerja.</p>
-    </section>
-
-    <section class="resume-section">
-      <h2>Pengalaman</h2>
-      <div class="resume-entry">
-        <div class="entry-heading">
-          <h3>PT Bumjin Electronics Indonesia</h3>
-          <span>06 Januari – 07 April 2026</span>
-        </div>
-        <p class="entry-sub">Praktik Kerja Lapangan — Unit Department</p>
-        <ul class="compact-list">
-          <li>Open JIG & input data</li>
-          <li>Packing</li>
-          <li>Assy T.J.</li>
-          <li>Open Tinsel Wire</li>
-          <li>Memasang spons</li>
-          <li>Cutting</li>
-          <li>Assy U_YOKE</li>
-          <li>Memasang Sliped</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="resume-section">
-      <h2>Pendidikan</h2>
-      <div class="resume-entry">
-        <div class="entry-heading">
-          <h3>SMKN 1 Rengasdengklok</h3>
-          <span>2024 – 2027</span>
-        </div>
-        <p>Teknik Jaringan Komputer dan Telekomunikasi</p>
-      </div>
-      <div class="resume-entry">
-        <div class="entry-heading">
-          <h3>SMPN 1 Rengasdengklok</h3>
-          <span>2021 – 2024</span>
-        </div>
-      </div>
-      <div class="resume-entry">
-        <div class="entry-heading">
-          <h3>SDN Rengasdengklok Selatan II</h3>
-          <span>2015 – 2021</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="resume-section">
-      <h2>Keahlian</h2>
-      <div class="resume-skills">
-        <span>Komunikasi</span>
-        <span>Microsoft Word</span>
-        <span>Problem Solving</span>
-        <span>Dokumentasi & Fotografi</span>
-        <span>Time Management & Perencanaan</span>
-        <span>Instalasi Windows</span>
-        <span>Simulasi Cisco</span>
-        <span>Dasar MikroTik & IP Address</span>
-        <span>Crimping Kabel LAN</span>
-      </div>
-    </section>
-
-    <section class="resume-section two-col">
-      <div>
-        <h2>Organisasi & Kegiatan</h2>
-        <div class="resume-entry">
-          <h3>Palang Merah Remaja (PMR)</h3>
-          <p>Anggota • 2024–2025</p>
-        </div>
-        <div class="resume-entry">
-          <h3>Badminton</h3>
-          <p>Anggota • 2022–2025</p>
-        </div>
-      </div>
-      <div>
-        <h2>Sertifikat</h2>
-        <div class="resume-entry">
-          <h3>Program Paham AI</h3>
-          <p>Literasi Kecerdasan Artifisial • 02 September 2026</p>
-          <p>Senopat Academy, Polri (KADIV TIK POLRI), Kemedikdasmen</p>
-        </div>
-        <div class="resume-entry">
-          <h3>Certificate of Appreciation</h3>
-          <p>Ruang Menyala / OCBC • 04 Juli 2026</p>
-        </div>
-      </div>
-    </section>
-
+    <section class="resume-section"><h2>Profil</h2><p>Siswi SMKN 1 Rengasdengklok jurusan Teknik Jaringan Komputer dan Telekomunikasi yang memiliki pengalaman Praktik Kerja Lapangan (PKL). Memiliki ketertarikan pada bidang jaringan komputer dan telekomunikasi, serta kemampuan instalasi Windows, simulasi jaringan Cisco, konfigurasi dasar MikroTik/IP address, dan crimping kabel LAN. Memiliki kemampuan analisis, disiplin, komunikasi, serta kemauan belajar yang baik. Siap beradaptasi dan mengembangkan kemampuan di lingkungan kerja.</p></section>
+    <section class="resume-section"><h2>Pengalaman</h2><div class="resume-entry"><div class="entry-heading"><h3>PT Bumjin Electronics Indonesia</h3><span>06 Januari – 07 April 2026</span></div><p class="entry-sub">Praktik Kerja Lapangan — Unit Department</p><ul class="compact-list"><li>Open JIG & input data</li><li>Packing</li><li>Assy T.J.</li><li>Open Tinsel Wire</li><li>Memasang spons</li><li>Cutting</li><li>Assy U_YOKE</li><li>Memasang Sliped</li></ul></div></section>
+    <section class="resume-section"><h2>Pendidikan</h2><div class="resume-entry"><div class="entry-heading"><h3>SMKN 1 Rengasdengklok</h3><span>2024 – 2027</span></div><p>Teknik Jaringan Komputer dan Telekomunikasi</p></div><div class="resume-entry"><div class="entry-heading"><h3>SMPN 1 Rengasdengklok</h3><span>2021 – 2024</span></div></div><div class="resume-entry"><div class="entry-heading"><h3>SDN Rengasdengklok Selatan II</h3><span>2015 – 2021</span></div></div></section>
+    <section class="resume-section"><h2>Keahlian</h2><div class="resume-skills"><span>Komunikasi</span><span>Microsoft Word</span><span>Problem Solving</span><span>Dokumentasi & Fotografi</span><span>Time Management & Perencanaan</span><span>Instalasi Windows</span><span>Simulasi Cisco</span><span>Dasar MikroTik & IP Address</span><span>Crimping Kabel LAN</span></div></section>
+    <section class="resume-section two-col"><div><h2>Organisasi & Kegiatan</h2><div class="resume-entry"><h3>Palang Merah Remaja (PMR)</h3><p>Anggota • 2024–2025</p></div><div class="resume-entry"><h3>Badminton</h3><p>Anggota • 2022–2025</p></div></div><div><h2>Sertifikat</h2><div class="resume-entry"><h3>Program Paham AI</h3><p>Literasi Kecerdasan Artifisial • 02 September 2026</p><p>Senopat Academy, Polri (KADIV TIK POLRI), Kemedikdasmen</p></div><div class="resume-entry"><h3>Certificate of Appreciation</h3><p>Ruang Menyala / OCBC • 04 Juli 2026</p></div></div></section>
     <footer class="resume-footer">“Pembelajar cepat yang siap beradaptasi, berdisiplin, dan berdedikasi untuk memberikan kontribusi nyata bagi tim.”</footer>
   </main>
 </body>
